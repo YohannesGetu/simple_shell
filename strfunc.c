@@ -1,6 +1,28 @@
 #include "shell.h"
 
 /**
+ * _puts - writes a string to standard output
+ * @str: string to write
+ *
+ * Return: number of chars printed or -1 on failure
+ */
+ssize_t _puts(char *str)
+{
+  ssize_t i, len;
+  for (i = 0; str[i]; i++)
+    
+    ;
+  
+  len = write(1, str, i);
+  if (len != i)
+    {
+      perror("Fatal Error");
+      return (-1);
+    }
+  return (len);
+}
+
+/**
  * _strdup - returns pointer to new mem alloc space which contains copy
  * @strtodup: string to be duplicated
  * Return: a pointer to the new duplicated string
