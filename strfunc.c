@@ -103,3 +103,19 @@ char *_strcat(char *strc1, char *strc2)
 	newstring[len1 + len2] = '\0';
 	return (newstring);
 }
+
+/**
+ * _strlen - returns the length of a string
+ * @str: string to be measured
+ * Return: length of string
+ */
+unsigned int _strlen(char *str)
+{
+	unsigned int len;
+
+	len = 0;
+
+	for (len = 0; str[len]; len++)
+		;
+	return (len);
+}

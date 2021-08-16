@@ -46,5 +46,6 @@ int new_exit(char *buffer, char *av, env_t **env);
 int check_for_path(char *av[], env_t **env);
 void path_execute(char *command, char **args);
 env_t *find_path(env_t *head);
+unsigned int _strlen(char *str);
 
 #endif /* _SHELL_H_ */
