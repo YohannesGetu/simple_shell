@@ -8,18 +8,16 @@
  */
 ssize_t _puts(char *str)
 {
-  ssize_t i, len;
-  for (i = 0; str[i]; i++)
-    
-    ;
-  
-  len = write(1, str, i);
-  if (len != i)
-    {
-      perror("Fatal Error");
-      return (-1);
-    }
-  return (len);
+	ssize_t i, len;
+	for (i = 0; str[i]; i++)
+		;
+	len = write(1, str, i);
+	if (len != i)
+	{
+		perror("Fatal Error");
+		return (-1);
+	}
+	return (len);
 }
 
 /**
