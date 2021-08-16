@@ -1,282 +1,141 @@
-# 0x16. C - Simple Shell
-
-# Tasks
-
-0. README, man, AUTHORS
-
->Write a README
-
->Write a man for your shell.
-
-You should have an AUTHORS file at the root of your repository, listing all individuals having contributed content to the repository. Format, see Docker
-
-
-1. Betty would be proud
-
-
-Write a beautiful code that passes the Betty checks
-
-
-2. Simple shell 0.1
-
-
-Write a UNIX command line interpreter.
-
-Usage: simple_shell
-
-Your Shell should:
-
-Display a prompt and wait for the user to type a command. A command line always ends with a new line.
-The prompt is displayed again each time a command has been executed.
-The command lines are simple, no semicolons, no pipes, no redirections or any other advanced features.
-The command lines are made only of one word. No arguments will be passed to programs.
-
-If an executable cannot be found, print an error message and display the prompt again.
-Handle errors.
-You have to handle the “end of file” condition (Ctrl+D)
-
-You don’t have to:
-
-use the PATH
-implement built-ins
-
-handle special characters : ", ', `, \, *, &, #
-
-be able to move the cursor
-
-handle commands with arguments
-
-
-3. Simple shell 0.2
-
-Simple shell 0.1 +
-
-Handle command lines with arguments
-
-
-4. Simple shell 0.3
-
-Simple shell 0.2 +
-
-Handle the PATH
-
-fork must not be called if the command doesn’t exist
-
-
-5. Simple shell 0.4
-
-Simple shell 0.3 +
-
-Implement the exit built-in, that exits the shell
-
-Usage: exit
-
-You don’t have to handle any argument to the built-in exit
-
-
-
-6. Simple shell 1.0
-
-Simple shell 0.4 +
-
-Implement the env built-in, that prints the current environment
-
-
-7. What happens when you type `ls -l *.c` in the shell
-
-Write a blog post describing step by step what happens when you type ls -l *.c and hit Enter in a shell. Try to explain every step you know of, going in as much details as you can, give examples and draw diagrams when needed. You should merge your previous knowledge of the shell with the specifics of how it works under the hoods (including syscalls).
-
-Have at least one picture, at the top of the blog post
-
-Publish your blog post on Medium or LinkedIn
-
-Share your blog post at least on LinkedIn
-
-Only one blog post by team
-
-The blog post must be done and published before the first deadline (it will be part of the manual review)
-
-Please, remember that these blogs must be written in English to further your technical ability in a variety of settings
-
-When done, please add all urls below (blog post, LinkedIn post, etc.)
-
-
-
-8. Test suite
-
-Contribute to a test suite for your shell.
-
-This is a task shared by everyone in the class.
-
-Every team (who contributed) will get the same score for this task (The repository owner will not get more points)
-
-You have to be pro-active and agree on one and unique repository to use for the test suite
-
-Please provide the link to the repository you contributed to
-
-Your contribution must be relevant (Correcting typos is nice and always appreciated on the open source sphere, but we won’t consider this a contribution at this point, unless it fixes a bug)
-
-
-9. Simple shell 0.1.1
-
-Simple shell 0.1 +
-
-Write your own getline function
-
-Use a buffer to read many chars at once and call the least possible the read system call
-
-You will need to use static variables
-
-You are not allowed to use getline
-
-You don’t have to:
-
-be able to move the cursor
-
-
-10. Simple shell 0.2.1
-
-Simple shell 0.2 +
-
-You are not allowed to use strtok
-
-
-
-11. Simple shell 0.4.1
-
-Simple shell 0.4 +
-
-handle arguments for the built-in exit
-
-Usage: exit status, where status is an integer used to exit the shell
-
-
-12. Simple shell 0.4.2
-
-Simple shell 0.4 +
-
-Handle Ctrl+C: your shell should not quit when the user inputs ^C
-man 2 signal.
-
-
-13. setenv, unsetenv
-
-Simple shell 1.0 +
-
-Implement the setenv and unsetenv builtin commands
-
-setenv
-Initialize a new environment variable, or modify an existing one
-
-Command syntax: setenv VARIABLE VALUE
-
-Should print something on stderr on failure
-
-unsetenv
-
-Remove an environment variable
-
-Command syntax: unsetenv VARIABLE
-
-Should print something on stderr on failure
-
-
-
-14. cd
-
-Simple shell 1.0 +
-
-Implement the builtin command cd:
-
-Changes the current directory of the process.
-
-Command syntax: cd [DIRECTORY]
-
-If no argument is given to cd the command must be interpreted like cd $HOME
-
-You have to handle the command cd -
-
-You have to update the environment variable PWD when you change directory
-
-man chdir, man getcwd
-
-
-15. ;
-
-Simple shell 1.0 +
-
-Handle the commands separator ;
-
-
-
-16. && and ||
-
-Simple shell 1.0 +
-
-Handle the && and || shell logical operators
-
-
-17. alias
-
-Simple shell 1.0 +
-
-Implement the alias builtin command
-
-Usage: alias [name[='value'] ...]
-
-alias: Prints a list of all aliases, one per line, in the form name='value'
-
-alias name [name2 ...]: Prints the aliases name, name2, etc 1 per line, in the form name='value'
-
-alias name='value' [...]: Defines an alias for each name whose value is given. If name is already an alias, replaces its value with value
-
-
-
-18. Variables
-
-Simple shell 1.0 +
-
-Handle variables replacement
-
-Handle the $? variable
-
-Handle the $$ variable
-
-
-19. Comments
-
-Simple shell 1.0 +
-
-Handle comments (#)
-
-
-
-20. help
-#advanced
-Simple shell 1.0 +
-
-Implement the help built-in
-Usage: help [BUILTIN]
-
-
-
-21. history
-#advanced
-Simple shell 1.0 +
-
-Implement the history built-in, without any argument
-The history built-in displays the history list, one command by line, preceded with line numbers (starting at 0)
-On exit, write the entire history, without line numbers, to a file named .simple_shell_history in the directory $HOME
-When the shell starts, read the file .simple_shell_history in the directory $HOME if it exists, and set the first line number to the total number of lines in the file modulo 4096
-
-
-
-22. File as input
-#advanced
-Simple shell 1.0 +
-
-Usage: simple_shell [filename]
-Your shell can take a file as a command line argument
-The file contains all the commands that your shell should run before exiting
-The file should contain one command per line
-In this mode, the shell should not print a prompt and should not read from stdin
+# <a href="url"><img src="https://cdn3.iconfinder.com/data/icons/egg/500/Egg_food_cracked_whipped-512.png" align="middle" width="100" height="100"></a> simple_shell
+
+
+## Table of Contents
+* [Description](#description)
+* [File Structure](#file-structure)
+* [Requirements](#requirements)
+* [Installation](#installation)
+* [Usage](#usage)
+* [Example of Use](#example-of-use)
+* [Bugs](#bugs)
+* [Authors](#authors)
+* [License](#license)
+
+## Description
+simple_shell is a command line interpreter, or shell, in the tradition of the first Unix shell written by Ken Thompson in 1971. This shell is intentionally minimalistic, yet includes the basic functionality of a traditional Unix-like command line user interface. 
+Standard functions and system calls employed in simple_shell include:
+   `access, execve, exit, fork, free, fstat, getline, malloc, perror, signal, stat, wait, write.`
+
+## File Structure
+* [AUTHORS](AUTHORS) - List of contributors to this repository
+* [man_1_simple_shell](man_1_simple_shell) - Manual page for the simple_shell
+* [shell.h](shell.h) - program header file
+* [builtins.c](builtins.c) - major builtin functions
+  * `check_for_builtins` - checks to see if the user's command matches a builtin
+  * `new_exit` - exits the shell with the option of a specified status
+  * `_env` - prints the shell's environment variables to the standard output
+  * `new_setenv` - initializes a new environment variable, or modifies an existing one
+  * `new_unsetenv` - removes an environment variable
+* [builtins2.c](builtins2.c) - helper functions for the builtins
+  * `add_key` - creates a new environment variable
+  * `find_key` - finds an environment variable in the environment array
+  * `add_value` - creates a new environment variable string
+  * `_atoi` - converts a string into a non-negative integer
+* [environment.c](environment.c) - functions related to the environment
+  * `make_env` - creates the shell's environment from the parent process
+  * `free_env` - frees the shell's environment
+* [errors.c](errors.c) - functions related to printing errors
+  * `print_error` - prints an error message to the standard error
+  * `_puts2` - prints a string to the standard error
+  * `_uitoa` - converts an unsigned integer to a string
+* [memory_allocation.c](memory_allocation.c) - memory allocation functions
+  * `_realloc` - a custom realloc function for arrays of pointers
+* [new_strtok.c](new_strtok.c) - custom strtok and helper functions
+  * `check_match` - checks if a character matches any in a string
+  * `new_strtok` - a custom strtok for the shell
+* [path.c](path.c) - functions related to executing commands
+  * `path_execute` - executes a command in the PATH
+  * `find_path` - finds the PATH environment variable
+  * `check_for_path` - checks if the command is in the PATH
+  * `execute_cwd` - executes a command with an absolute path
+  * `check_for_dir` - checks if the command contains an absolute path
+* [simple_shell.c](simple_shell.c) - essential functions to the shell
+  * `main` - the main function of the program
+  * `sig_handler` - handles SIGINT
+* [strfunc.c](strfunc.c) - functions related to string manipulation
+  * `_puts` - writes a string to standart output
+  * `_strdup` - duplicates a string
+  * `_strcmpr` - compares two strings
+  * `_strcat` - concatenates two strings with a `/` in the middle
+  * `_strlen` - calculates the length of a string
+* [tokenize.c](tokenize.c) - tokenizing function
+  * `tokenize` - creates an array of tokens from a buffer with a specified delimiter
+
+## Requirements
+
+simple_shell is designed to run in the `Ubuntu 14.04 LTS` linux environment and to be compiled using the GNU compiler collection v. `gcc 4.8.4` with flags`-Wall, -Werror, -Wextra, and -pedantic.`
+
+## Installation
+
+   - Clone this repository: `git clone "https://github.com/YohannesGetu/simple_shell.git"`
+   - Change directories into the repository: `cd simple_shell`
+   - Compile: `gcc -Wall -Werror -Wextra -pedantic *.c -o hsh`
+   - Run the shell in interactive mode: `./hsh`
+   - Or run the shell in non-interactive mode: example `echo "pwd" | ./hsh`
+
+## Usage
+
+The simple_shell is designed to execute commands in a similar manner to sh, however with more limited functionality. The development of this shell is ongoing. The below features will be checked as they become available (see man page for complete information on usage):
+
+### Features
+- [ ] uses the PATH
+- [ ] implements builtins
+- [ ] handles command line arguments
+- [ ] custom strtok function
+- [ ] uses exit status
+- [ ] shell continues upon Crtl+C (*^C*)
+- [ ] handles comments (#)
+- [ ] handles *;*
+- [ ] custom getline type function
+- [ ] handles *&&* and *||*
+- [ ] aliases
+- [ ] variable replacement
+
+
+### Builtins
+
+- [ ] exit
+- [ ] env
+- [ ] setenv
+- [ ] unsetenv
+- [ ] cd
+- [ ] help
+- [ ] history
+
+## Example of Use
+Run the executable in your terminal after compiling:
+
+$ ./hsh
+$ # This is our rendition of the shell
+$ ls -al
+total 100
+drwxrwxr-x  3 vagrant vagrant  4096 Jul 19 22:49 .
+drwxr-xr-x 14 vagrant vagrant  4096 Jul 17 22:37 ..
+-rw-rw-r--  1 vagrant vagrant   144 Jul 19 17:16 AUTHORS
+-rw-rw-r--  1 vagrant vagrant  2367 Jul 19 22:33 builtins2.c
+-rw-rw-r--  1 vagrant vagrant  2764 Jul 19 22:14 builtins.c
+-rw-rw-r--  1 vagrant vagrant   710 Jul 16 01:03 environment.c
+-rw-rw-r--  1 vagrant vagrant  1217 Jul 16 03:24 errors.c
+drwxrwxr-x  8 vagrant vagrant  4096 Jul 19 22:34 .git
+-rwxrwxr-x  1 vagrant vagrant 32287 Jul 19 22:34 hsh
+-rw-rw-r--  1 vagrant vagrant  1792 Jul 19 22:12 man_1_simple_shell
+-rw-rw-r--  1 vagrant vagrant   484 Jul 15 20:09 memory_allocation.c
+-rw-rw-r--  1 vagrant vagrant  1273 Jul 18 21:00 new_strtok.c
+-rw-rw-r--  1 vagrant vagrant  3427 Jul 19 22:06 path.c
+-rw-rw-r--  1 vagrant vagrant  2347 Jul 19 22:49 README.md
+-rw-rw-r--  1 vagrant vagrant  1769 Jul 19 22:04 shell.h
+-rw-rw-r--  1 vagrant vagrant  1480 Jul 18 21:15 simple_shell.c
+-rw-rw-r--  1 vagrant vagrant  2111 Jul 16 01:10 strfunc.c
+-rw-rw-r--  1 vagrant vagrant   719 Jul 19 21:46 tokenize.c
+
+## Bugs
+At this time, there are no known bugs.
+
+## Authors
+Sammie Ogoigbe | [GitHub](https://github.com/ogoigbe12) | [Email](mailto:ogoigbe12@gmail.com>)
+
+Yohannes Getu | [GitHub](https://github.com/YohannesGetu) | [Email](mailto:nede.evoli@gmail.com)
+
+## License
+simple_shell is open source and therefore free to download and use without permission.
