@@ -11,10 +11,9 @@ int main(void)
 	char **av;
 	size_t len_buffer = 0, i = 0, mcount = 10;
 	pid_t child_pid;
-	int status, p;
+	int status;
 	struct stat st;
 	unsigned int is_pipe = 0;
-	void (*f)(char *[], env_t **);
 
 	if (fstat(STDIN_FILENO, &st) == -1)
 	{
@@ -35,7 +34,7 @@ int main(void)
 			perror("Issue mallocing\n");
 			exit(1);
 		}
-		while ((av[i] = strtok(buffer, " \n\t")) != NULL)
+		while ((av[i] = strtok(buffer, "\n \t")) != NULL)
 		{
 			i++;
 			if (i == mcount)
@@ -50,13 +49,9 @@ int main(void)
 			}
 			buffer = NULL;
 		}
-		f = check_for_builtins(av, env);
-		if (f == NULL)
-		{
-			p = check_for_path(av, env);
-			if (p == -1)
+		if (check_for_builtins(av, env) == NULL)
+			if (check_for_path(av, env) == -1)
 				execute_cwd(av, env);
-		}
 		free(tmp_buffer);
 		free(av);
 		if (is_pipe == 0)
