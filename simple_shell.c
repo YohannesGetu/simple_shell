@@ -7,7 +7,7 @@
  */
 int main(void)
 {
-	char *buffer = NULL, tmp_buffer;
+	char *buffer = NULL;
 	char **av;
 	size_t len_buffer = 0, i = 0, mcount = 10;
 	pid_t child_pid;
@@ -26,33 +26,14 @@ int main(void)
 		_puts("$ ");
 	while (getline(&buffer, &len_buffer, stdin) != -1)
 	{
-		tmp_buffer = buffer;
-		av = malloc(sizeof(char *) * mcount);
-		if (av == NULL)
+		av = tokenize_av(buffer);
+		if (av)
 		{
-			free(tmp_buffer);
-			perror("Issue mallocing\n");
-			exit(1);
+			if (check_for_builtins(av, env) == NULL)
+				if (check_for_path(av, env) == -1)
+					execute_cwd(av, env);
 		}
-		while ((av[i] = strtok(buffer, "\n \t")) != NULL)
-		{
-			i++;
-			if (i == mcount)
-			{
-				av = _realloc(av, &mcount, sizeof(char *));
-				if (av == NULL)
-				{
-					free(tmp_buffer);
-					perror("Issue mallocing\n");
-					exit(1);
-				}
-			}
-			buffer = NULL;
-		}
-		if (check_for_builtins(av, env) == NULL)
-			if (check_for_path(av, env) == -1)
-				execute_cwd(av, env);
-		free(tmp_buffer);
+		free(buffer);
 		free(av);
 		if (is_pipe == 0)
 			_puts("$ ");
