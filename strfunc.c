@@ -9,6 +9,7 @@
 ssize_t _puts(char *str)
 {
 	ssize_t i, len;
+
 	for (i = 0; str[i]; i++)
 		;
 	len = write(1, str, i);
@@ -46,8 +47,8 @@ char *_strdup(char *strtodup)
 
 /**
  * _strcmpr - compares two strings
- * @strcmp: first string, of two, to be compared in length
- * @strcmp: second string, of two, to be compared
+ * @strcmp1: first string, of two, to be compared in length
+ * @strcmp2: second string, of two, to be compared
  * Return: 0 on success, anything else is a failure
  */
 int _strcmpr(char *strcmp1, char *strcmp2)

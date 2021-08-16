@@ -29,7 +29,7 @@ int main(void)
 		av = tokenize_av(buffer);
 		if (av)
 		{
-			if (check_for_builtins(av, env) == NULL)
+			if (check_for_builtins(buffer, av, env) == NULL)
 				if (check_for_path(av, env) == 0)
 					execute_cwd(av, env);
 		}
@@ -37,6 +37,7 @@ int main(void)
 		free(av);
 		if (is_pipe == 0)
 			_puts("$ ");
+		buffer = NULL;
 	}
 	free(buffer);
 	exit(127);
