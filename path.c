@@ -7,11 +7,14 @@ void path_execute(char *command, char **args)
 
 	child_pid = fork();
 	if (child_pid == -1)
-		;/*error stuff*/
+	{
+		perror("Fatal Error");
+		return;
+	}
 	if (child_pid == 0)
 	{
 		if (execve(command, args, NULL) == -1)
-			;/*error stuff*/
+			perror("Fatal Error");
 	}
 	else
 	{
@@ -43,7 +46,10 @@ int check_for_path(char *av[], env_t **env)
 	path_dup_cpy = path_dup;
 	path_tokens = malloc(mcount * sizeof(char *));
 	if (path_tokens == NULL)
-		;/* error check */
+	{
+		perror("Fatal Error");
+		return (-1);
+	}
 	while ((path_tokens[i] = strtok(path_dup_cpy, ":")) != NULL)
 	{
 		i++;
@@ -53,7 +59,8 @@ int check_for_path(char *av[], env_t **env)
 			path_tokens = _realloc(path_tokens, &mcount, sizeof(char *));
 			if (path_tokens == NULL)
 			{
-				;/* error stuff */
+			        perror("Fatal Error");
+				return(-1)
 			}
 		}
 	}
@@ -70,5 +77,7 @@ int check_for_path(char *av[], env_t **env)
 	}
 	free(path_dup);
 	free(path_tokens);
-	return (0);
+	if (path_tokens[i] == NULL)
+		return (0);
+	return (1);
 }

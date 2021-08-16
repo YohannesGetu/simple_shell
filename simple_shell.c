@@ -30,7 +30,7 @@ int main(void)
 		if (av)
 		{
 			if (check_for_builtins(av, env) == NULL)
-				if (check_for_path(av, env) == -1)
+				if (check_for_path(av, env) == 0)
 					execute_cwd(av, env);
 		}
 		free(buffer);
