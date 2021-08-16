@@ -57,11 +57,11 @@ char *_strcat(char *strc1, char *strc2)
 
 	len1 = 0;
 	len2 = 0;
-	if (s1 == NULL)
+	if (strc1 == NULL)
 		len1 = 0;
 	else
 	{
-		for (len1 = 0; s1[len1]; len1++)
+		for (len1 = 0; strc1[len1]; len1++)
 			;
 	}
 	if (strc2 == NULL)
