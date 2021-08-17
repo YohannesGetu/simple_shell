@@ -33,7 +33,7 @@ char *_strdup(char *strtodup)
 	int len, i;
 
 	if (strtodup == 0)
-		return (0);
+		return (NULL);
 
 	for (len = 0; strtodup[len]; len++)
 		;

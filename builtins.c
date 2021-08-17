@@ -13,8 +13,8 @@ void (*check_for_builtins(char *buffer, char **av, env_t **env))()
 	builtins_t check[] = {
 		{"exit", new_exit},
 		{"env", _env},
-		{"setenv", NULL},
-		{"unsetenv", NULL},
+		{"setenv", new_setenv},
+		{"unsetenv", new_unsetenv},
 		{NULL, NULL}
 	};
 

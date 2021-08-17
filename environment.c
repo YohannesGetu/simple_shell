@@ -35,13 +35,13 @@ char *make_value(char *str)
 
 	for (i = 0; str[i] != '='; i++)
 		;
-	for (j = 0; str[i + j]; j++)
+	for (j = 0; str[i + 1 + j]; j++)
 		;
 	new_value = malloc(sizeof(char) * (j + 1));
 	if (new_value == NULL)
 		return (NULL);
-	for (j = 0; str[i + j]; j++)
-		new_value[j] = str[i + j];
+	for (j = 0; str[i + 1 + j]; j++)
+		new_value[j] = str[i + 1 + j];
 	new_value[j] = '\0';
 	return (new_value);
 }
