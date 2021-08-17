@@ -39,7 +39,7 @@ env_t *find_path(env_t *head)
 {
 	while (head)
 	{
-		if (_strcmp(head->key, "PATH") == 0)
+		if (_strcmpr(head->key, "PATH") == 0)
 			break;
 		head = head->next;
 	}
@@ -51,25 +51,28 @@ env_t *find_path(env_t *head)
  * @av: array of arguments
  * @env: linked list of environment variables
  *
- * Return: 1 on success, 0 on failure, -1 on fatal error
+ * Return: void
  */
-int check_for_path(char *av[], env_t **env)
+void check_for_path(char **av, env_t **env)
 {
-	env_t path;
-	char *path_dup = NULL;
-	size_t i = 0, mcount = 10;
+	env_t *path;
+	char *path_dup = NULL, *check;
+	size_t i = 0;
 	char **path_tokens;
-	struct stat *buf;
+	struct stat buf;
 
 	path = find_path(*env);
 	path_dup = _strdup(path->value);
 	path_tokens = tokenize(path_dup, ":");
 	if (path_tokens == NULL)
-		return (-1);
+	{
+		perror("Fatal Error");
+		return;
+	}
 	for (i = 0; path_tokens[i]; i++)
 	{
 		check = _strcat(path_tokens[i], av[0]);
-		if (stat(check, buf) == 0)
+		if (stat(check, &buf) == 0)
 		{
 			path_execute(check, av);
 			free(check);
@@ -78,8 +81,32 @@ int check_for_path(char *av[], env_t **env)
 		free(check);
 	}
 	free(path_dup);
-	free(path_tokens);
 	if (path_tokens[i] == NULL)
-		return (0);
-	return (1);
+		execute_cwd(av);
+	free(path_tokens);
+}
+
+/**
+ * execute_cwd - executes the command in the current working directory
+ * @av: arguments to the command
+ *
+ * Return: void
+ */
+void execute_cwd(char **av)
+{
+	pid_t child_pid;
+	int status;
+
+	child_pid = fork();
+	if (child_pid == -1)
+	{
+		perror("Fatal Error");
+	}
+	if (child_pid == 0)
+	{
+		if (execve(av[0], av, NULL) == -1)
+			perror("Error:");
+	}
+	else
+		wait(&status);
 }

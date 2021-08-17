@@ -10,8 +10,8 @@
  */
 char **tokenize(char *buffer, char *delimiter)
 {
-	char **tokens;
-	size_t i, mcount = 10;
+	char **tokens = NULL;
+	size_t i = 0, mcount = 10;
 
 	tokens = malloc(sizeof(char *) * mcount);
 	if (tokens == NULL)
@@ -24,7 +24,7 @@ char **tokenize(char *buffer, char *delimiter)
 		i++;
 		if (i == mcount)
 		{
-			tokens = _realloc(tokens, &mcount, sizeof(char *));
+			tokens = _realloc(tokens, &mcount);
 			if (tokens == NULL)
 			{
 				perror("Fatal Error");
@@ -33,4 +33,5 @@ char **tokenize(char *buffer, char *delimiter)
 		}
 		buffer = NULL;
 	}
+	return (tokens);
 }

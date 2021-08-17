@@ -7,20 +7,20 @@
  * @buffer: buffer
  * Return: pointer to the function or NULL
  */
-void (*check_for_builtins(char *buffer, char *av[], env_t **env))()
+void (*check_for_builtins(char *buffer, char **av, env_t **env))()
 {
 	unsigned int i;
 	builtins_t check[] = {
-		{"exit", new_exit}
-		{"env", _env}
-		{"setenv", NULL}
-		{"unsetenv", NULL}
+		{"exit", new_exit},
+		{"env", _env},
+		{"setenv", new_setenv},
+		{"unsetenv", new_unsetenv},
 		{NULL, NULL}
 	};
 
 	for (i = 0; check[i].f != NULL; i++)
 	{
-		if (_strcmp(av[0], check[i].name) == 0)
+		if (_strcmpr(av[0], check[i].name) == 0)
 			break;
 	}
 	if (check[i].f != NULL)
@@ -33,12 +33,36 @@ void (*check_for_builtins(char *buffer, char *av[], env_t **env))()
  * @buffer: buffer
  * @av: arguments
  * @env: environment
- * Return: 0 on success
+ * Return: void
  */
-int new_exit(char *buffer, char *av, env_t **env)
+void new_exit(char *buffer, char *av, env_t **env)
 {
 	free(buffer);
 	free(av);
-	free_env(env); /* Write function free_env */
+	free_env(env);
 	exit(0); /* add precision, example 98, etc */
+}
+
+/**
+ * _env - prints the current environment
+ * @env: environment variables to be printed
+ * @b: buffer
+ * @av: arguments
+ * Return: 0 void.
+ */
+void _env(char *b, char **av, env_t **env)
+{
+	env_t *tmp;
+	(void)b;
+	(void)av;
+
+	tmp = *env;
+	while (tmp != NULL)
+	{
+		_puts(tmp->key);
+		_puts("=");
+		_puts(tmp->value);
+		_puts("\n");
+		tmp = tmp->next;
+	}
 }

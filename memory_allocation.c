@@ -8,18 +8,18 @@
  *
  * Return: pointer to the new array
  */
-void *_realloc(char *ptr, size_t *size, size_t bytes)
+char **_realloc(char **ptr, size_t *size)
 {
-	char *new;
+	char **new;
 	size_t i;
 
-	new = malloc(bytes * ((*size) + 10));
+	new = malloc(sizeof(char *) * ((*size) + 10));
 	if (new == NULL)
 	{
 		free(ptr);
 		return (NULL);
 	}
-	for (i = 0; i < (*size * bytes); i++)
+	for (i = 0; i < (*size); i++)
 	{
 		new[i] = ptr[i];
 	}

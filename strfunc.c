@@ -33,11 +33,11 @@ char *_strdup(char *strtodup)
 	int len, i;
 
 	if (strtodup == 0)
-		return (0);
+		return (NULL);
 
 	for (len = 0; strtodup[len]; len++)
 		;
-	cofs = malloc((len + 1) * sizeof(char));
+	copy = malloc((len + 1) * sizeof(char));
 
 	for (i = 0; i <= len; i++)
 		copy[i] = strtodup[i];
@@ -92,15 +92,16 @@ char *_strcat(char *strc1, char *strc2)
 		for (len2 = 0; strc2[len2]; len2++)
 			;
 	}
-	newlen = len1 + len2 + 1;
+	newlen = len1 + len2 + 2;
 	newstring = malloc(newlen * sizeof(char));
 	if (newstring == NULL)
 		return (NULL);
 	for (i = 0; i < len1; i++)
 		newstring[i] = strc1[i];
+	newstring[i] = '/';
 	for (j = 0; j < len2; j++)
-		newstring[i + j] = strc2[j];
-	newstring[len1 + len2] = '\0';
+		newstring[i + 1 + j] = strc2[j];
+	newstring[len1 + len2 + 1] = '\0';
 	return (newstring);
 }
 
