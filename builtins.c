@@ -66,3 +66,85 @@ void _env(char *b, char **av, env_t **env)
 		tmp = tmp->next;
 	}
 }
+
+/**
+ * new_setenv - Initialize a new environment variable or modify an existing one
+ * @vars: pointer to a struct of variables
+ *
+ * Return: void
+ */
+void new_setenv(vars_t *vars)
+{
+	env_t *tmp = NULL, *newnode = NULL;
+	char *newvalue = NULL, *newkey = NULL;
+
+	if (vars->av[1] == NULL || vars->av[2] == NULL)
+	{
+		perror("wrong number of arguments!");
+		return;
+	}
+	tmp = *vars->env;
+	while (tmp != NULL)
+	{
+		if (_strcmpr(vars->av[1], tmp->key) == 0)
+		{
+			change_env_value(vars->av[2], tmp);
+			return;
+		}
+		tmp = tmp->next;
+	}
+	if (tmp == NULL)
+	{
+		newkey = _strdup(vars->av[1]);
+		if (newkey == NULL)
+			perror("Fatal Error");
+		newvalue = _strdup(vars->av[2]);
+		if (newvalue == NULL)
+		{
+			perror("Fatal Error");
+			free(newkey);
+		}
+		newnode = add_env_node_end(vars->env, newkey, newvalue);
+		if (newnode == NULL)
+		{
+			free(newkey);
+			free(newvalue);
+			perror("Fatal Error");
+		}
+	}
+}
+
+/**
+ * new_unsetenv - Remove an environment variable
+ * @vars: pointer to a struct of variables
+ *
+ * Return: void
+ */
+void new_unsetenv(vars_t *vars)
+{
+	env_t *tmp, *previous;
+
+	tmp = previous = *vars->env;
+	if (vars->av[1] == NULL)
+	{
+		perror("Wrong number of arguments!");
+		return;
+	}
+	while (tmp != NULL)
+	{
+		if (_strcmpr(tmp->key, vars->av[1]) == 0)
+		{
+			if (previous == *vars->env)
+				*vars->env = tmp->next;
+			else
+				previous->next = tmp->next;
+			free(tmp->key);
+			free(tmp->value);
+			free(tmp);
+			return;
+		}
+		previous = tmp;
+		tmp = tmp->next;
+	}
+	perror("No environment variable to unset!");
+}
