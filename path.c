@@ -51,7 +51,7 @@ env_t *find_path(env_t *head)
  * @av: array of arguments
  * @env: linked list of environment variables
  *
- * Return: 1 on success, 0 on failure, -1 on fatal error
+ * Return: void
  */
 void check_for_path(char **av, env_t **env)
 {
@@ -59,7 +59,7 @@ void check_for_path(char **av, env_t **env)
 	char *path_dup = NULL, *check;
 	size_t i = 0;
 	char **path_tokens;
-	struct stat *buf;
+	struct stat buf;
 
 	path = find_path(*env);
 	path_dup = _strdup(path->value);
@@ -72,7 +72,7 @@ void check_for_path(char **av, env_t **env)
 	for (i = 0; path_tokens[i]; i++)
 	{
 		check = _strcat(path_tokens[i], av[0]);
-		if (stat(check, buf) == 0)
+		if (stat(check, &buf) == 0)
 		{
 			path_execute(check, av);
 			free(check);
@@ -81,10 +81,9 @@ void check_for_path(char **av, env_t **env)
 		free(check);
 	}
 	free(path_dup);
-	free(path_tokens);
 	if (path_tokens[i] == NULL)
 		execute_cwd(av);
-	return;
+	free(path_tokens);
 }
 
 /**

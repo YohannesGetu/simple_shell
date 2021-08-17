@@ -46,11 +46,15 @@ void new_exit(char *buffer, char *av, env_t **env)
 /**
  * _env - prints the current environment
  * @env: environment variables to be printed
+ * @b: buffer
+ * @av: arguments
  * Return: 0 void.
  */
-void _env(env_t **env)
+void _env(char *b, char **av, env_t **env)
 {
 	env_t *tmp;
+	(void)b;
+	(void)av;
 
 	tmp = *env;
 	while (tmp != NULL)
@@ -61,5 +65,4 @@ void _env(env_t **env)
 		_puts("\n");
 		tmp = tmp->next;
 	}
-	return;
 }
