@@ -1,34 +1,36 @@
 #include "shell.h"
 
 
-char **tokenize_av (char *buffer)
+/**
+ * tokenize - tokenizes a buffer with a delimiter
+ * @buffer: buffer to tokenize
+ * @delimiter: delimiter to tokenize along
+ *
+ * Return: pointer to an array of pointers to the tokens
+ */
+char **tokenize(char *buffer, char *delimiter)
 {
-  char **av;
-  size_t i, mcount = 10;
+	char **tokens;
+	size_t i, mcount = 10;
 
-
-  av = malloc(sizeof(char *) * mount);
-  if (av == NULL)
-    {
-
-      perror("Fatal Error");
-      return (NULL);
-
-    }
-  while ((av[i] = strtok(buffer, "\n \t")) != NULL)
-    {
-      i++;
-      if (i == mcount)
+	tokens = malloc(sizeof(char *) * mcount);
+	if (tokens == NULL)
 	{
-
-      av = _realloc(av, &mcount, sizeof(char *));
-      if (av == NULL)
+		perror("Fatal Error");
+		return (NULL);
+	}
+	while ((tokens[i] = strtok(buffer, delimiter)) != NULL)
 	{
-
-	  perror("Fatal Error");
-	  return (NULL);
+		i++;
+		if (i == mcount)
+		{
+			tokens = _realloc(tokens, &mcount, sizeof(char *));
+			if (tokens == NULL)
+			{
+				perror("Fatal Error");
+				return (NULL);
+			}
+		}
+		buffer = NULL;
 	}
-	}
-      buffer = NULL;
-    }
 }
