@@ -48,7 +48,7 @@ char *_strcat(char *strc1, char *strc2);
 unsigned int _strlen(char *str);
 
 char **tokenize(char *buffer, char *delimiter);
-void *_realloc(char *ptr, size_t *size, size_t bytes);
+char **_realloc(char **ptr, size_t *size);
 
 void (*check_for_builtins(char *, char **av, env_t **env))();
 void new_exit(char *buffer, char *av, env_t **env);

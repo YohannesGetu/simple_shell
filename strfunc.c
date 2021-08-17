@@ -37,7 +37,7 @@ char *_strdup(char *strtodup)
 
 	for (len = 0; strtodup[len]; len++)
 		;
-	cofs = malloc((len + 1) * sizeof(char));
+	copy = malloc((len + 1) * sizeof(char));
 
 	for (i = 0; i <= len; i++)
 		copy[i] = strtodup[i];

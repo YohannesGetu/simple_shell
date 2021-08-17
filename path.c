@@ -39,7 +39,7 @@ env_t *find_path(env_t *head)
 {
 	while (head)
 	{
-		if (_strcmp(head->key, "PATH") == 0)
+		if (_strcmpr(head->key, "PATH") == 0)
 			break;
 		head = head->next;
 	}
@@ -55,14 +55,12 @@ env_t *find_path(env_t *head)
  */
 void check_for_path(char **av, env_t **env)
 {
-	env_t path;
-	char *path_dup = NULL;
-	size_t i = 0, mcount = 10;
+	env_t *path;
+	char *path_dup = NULL, *check;
+	size_t i = 0;
 	char **path_tokens;
 	struct stat *buf;
 
-	if (r = 0)
-		return (1);
 	path = find_path(*env);
 	path_dup = _strdup(path->value);
 	path_tokens = tokenize(path_dup, ":");

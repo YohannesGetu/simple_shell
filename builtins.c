@@ -11,16 +11,16 @@ void (*check_for_builtins(char *buffer, char **av, env_t **env))()
 {
 	unsigned int i;
 	builtins_t check[] = {
-		{"exit", new_exit}
-		{"env", _env}
-		{"setenv", NULL}
-		{"unsetenv", NULL}
+		{"exit", new_exit},
+		{"env", _env},
+		{"setenv", NULL},
+		{"unsetenv", NULL},
 		{NULL, NULL}
 	};
 
 	for (i = 0; check[i].f != NULL; i++)
 	{
-		if (_strcmp(av[0], check[i].name) == 0)
+		if (_strcmpr(av[0], check[i].name) == 0)
 			break;
 	}
 	if (check[i].f != NULL)

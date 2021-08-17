@@ -9,9 +9,10 @@ int main(void)
 {
 	char *buffer = NULL;
 	char **av;
-	size_t len_buffer = 0, i = 0, mcount = 10;
+	size_t len_buffer = 0, i = 0;
 	unsigned int is_pipe = 0;
 	env_t *env = NULL;
+	struct stat st;
 
 	env = make_env(environ);
 	if (fstat(STDIN_FILENO, &st) == -1)
@@ -25,7 +26,7 @@ int main(void)
 		_puts("$ ");
 	while (getline(&buffer, &len_buffer, stdin) != -1)
 	{
-		av = tokenize_av(buffer);
+		av = tokenize(buffer);
 		if (av)
 			if (check_for_builtins(buffer, av, &env) == NULL)
 				check_for_path(av, &env);

@@ -58,8 +58,6 @@ env_t *add_env_node_end(env_t **head, char *key, char *value)
 {
 	env_t *new, *tmp;
 
-	if (str == NULL)
-		return (NULL);
 	new = malloc(sizeof(env_t));
 	if (new == NULL)
 		return (NULL);
@@ -90,6 +88,7 @@ env_t *make_env(char **environment)
 	env_t *head;
 	char *key;
 	char *value;
+	env_t *p;
 
 	head = NULL;
 	for (i = 0; environment[i]; i++)
@@ -102,10 +101,10 @@ env_t *make_env(char **environment)
 			free_env(&head);
 			exit(1);
 		}
-		p = add_env_node_end(&head, environment[i]);
+		p = add_env_node_end(&head, key, value);
 		if (p == NULL)
 		{
-			peror("Fatal Error");
+			perror("Fatal Error");
 			free_env(&head);
 			exit(1);
 		}
@@ -128,8 +127,8 @@ void free_env(env_t **head)
 	while (*head != NULL)
 	{
 		next = (*head)->next;
-		free(*head->key);
-		free(*head->value);
+		free((*head)->key);
+		free((*head)->value);
 		free(*head);
 		*head = next;
 	}
