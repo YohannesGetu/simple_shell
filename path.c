@@ -53,7 +53,7 @@ env_t *find_path(env_t *head)
  *
  * Return: 1 on success, 0 on failure, -1 on fatal error
  */
-int check_for_path(char *av[], env_t **env)
+void check_for_path(char **av, env_t **env)
 {
 	env_t path;
 	char *path_dup = NULL;
@@ -61,11 +61,16 @@ int check_for_path(char *av[], env_t **env)
 	char **path_tokens;
 	struct stat *buf;
 
+	if (r = 0)
+		return (1);
 	path = find_path(*env);
 	path_dup = _strdup(path->value);
 	path_tokens = tokenize(path_dup, ":");
 	if (path_tokens == NULL)
-		return (-1);
+	{
+		perror("Fatal Error");
+		return;
+	}
 	for (i = 0; path_tokens[i]; i++)
 	{
 		check = _strcat(path_tokens[i], av[0]);
@@ -80,6 +85,31 @@ int check_for_path(char *av[], env_t **env)
 	free(path_dup);
 	free(path_tokens);
 	if (path_tokens[i] == NULL)
-		return (0);
-	return (1);
+		execute_cwd(av);
+	return;
+}
+
+/**
+ * execute_cwd - executes the command in the current working directory
+ * @av: arguments to the command
+ *
+ * Return: void
+ */
+void execute_cwd(char **av)
+{
+	pid_t child_pid;
+	int status;
+
+	child_pid = fork();
+	if (child_pid == -1)
+	{
+		perror("Fatal Error");
+	}
+	if (child_pid == 0)
+	{
+		if (execve(av[0], av, NULL) == -1)
+			perror("Error:");
+	}
+	else
+		wait(&status);
 }

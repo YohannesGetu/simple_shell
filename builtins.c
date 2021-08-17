@@ -7,7 +7,7 @@
  * @buffer: buffer
  * Return: pointer to the function or NULL
  */
-void (*check_for_builtins(char *buffer, char *av[], env_t **env))()
+void (*check_for_builtins(char *buffer, char **av, env_t **env))()
 {
 	unsigned int i;
 	builtins_t check[] = {
@@ -39,7 +39,7 @@ void new_exit(char *buffer, char *av, env_t **env)
 {
 	free(buffer);
 	free(av);
-	free_env(env); /* Write function free_env */
+	free_env(env);
 	exit(0); /* add precision, example 98, etc */
 }
 
@@ -50,13 +50,16 @@ void new_exit(char *buffer, char *av, env_t **env)
  */
 void _env(env_t **env)
 {
-	while (env != NULL)
+	env_t *tmp;
+
+	tmp = *env;
+	while (tmp != NULL)
 	{
-		_puts(env->key);
-		_puts('=');
-		_puts(env->value);
-		_puts('\n');
-		env = env->next;
+		_puts(tmp->key);
+		_puts("=");
+		_puts(tmp->value);
+		_puts("\n");
+		tmp = tmp->next;
 	}
 	return;
 }

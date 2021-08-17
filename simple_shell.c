@@ -10,11 +10,10 @@ int main(void)
 	char *buffer = NULL;
 	char **av;
 	size_t len_buffer = 0, i = 0, mcount = 10;
-	pid_t child_pid;
-	int status;
-	struct stat st;
 	unsigned int is_pipe = 0;
+	env_t *env = NULL;
 
+	env = make_env(environ);
 	if (fstat(STDIN_FILENO, &st) == -1)
 	{
 		perror("Error with STDIN");
@@ -28,17 +27,15 @@ int main(void)
 	{
 		av = tokenize_av(buffer);
 		if (av)
-		{
-			if (check_for_builtins(buffer, av, env) == NULL)
-				if (check_for_path(av, env) == 0)
-					execute_cwd(av, env);
-		}
+			if (check_for_builtins(buffer, av, &env) == NULL)
+				check_for_path(av, &env);
 		free(buffer);
 		free(av);
 		if (is_pipe == 0)
 			_puts("$ ");
 		buffer = NULL;
 	}
+	free_env(&env);
 	free(buffer);
 	exit(127);
 }
