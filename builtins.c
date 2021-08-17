@@ -33,12 +33,30 @@ void (*check_for_builtins(char *buffer, char *av[], env_t **env))()
  * @buffer: buffer
  * @av: arguments
  * @env: environment
- * Return: 0 on success
+ * Return: void
  */
-int new_exit(char *buffer, char *av, env_t **env)
+void new_exit(char *buffer, char *av, env_t **env)
 {
 	free(buffer);
 	free(av);
 	free_env(env); /* Write function free_env */
 	exit(0); /* add precision, example 98, etc */
+}
+
+/**
+ * _env - prints the current environment
+ * @env: environment variables to be printed
+ * Return: 0 void.
+ */
+void _env(env_t **env)
+{
+	while (env != NULL)
+	{
+		_puts(env->key);
+		_puts('=');
+		_puts(env->value);
+		_puts('\n');
+		env = env->next;
+	}
+	return;
 }
