@@ -8,6 +8,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
+#include <limits.h>
 
 
 /**
@@ -61,6 +62,7 @@ void new_unsetenv(vars_t *vars);
 void add_key(vars_t *vars);
 char **find_key(char **env, char *key);
 char *add_value(vars_t *vars);
+int _atoi(char *str);
 
 void check_for_path(vars_t *vars);
 int path_execute(char *command, vars_t *vars);

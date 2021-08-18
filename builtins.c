@@ -33,6 +33,21 @@ void (*check_for_builtins(vars_t *vars))(vars_t *vars)
  */
 void new_exit(vars_t *vars)
 {
+	int status;
+
+	if (vars->av[1] != NULL)
+	{
+		status = _atoi(vars->av[1]);
+		if (status == -1)
+		{
+			vars->status = 2;
+			print_error(vars, ": Illegal number: ");
+			_puts2(vars->av[1]);
+			_puts2("\n");
+			return;
+		}
+		vars->status = status;
+	}
 	free(vars->buffer);
 	free(vars->av);
 	free_env(vars->env);
@@ -70,6 +85,7 @@ void new_setenv(vars_t *vars)
 	if (vars->av[1] == NULL || vars->av[2] == NULL)
 	{
 		print_error(vars, ": Incorrect number of arguments\n");
+		vars->status = 2;
 		return;
 	}
 	key = find_key(vars->env, vars->av[1]);
@@ -105,6 +121,7 @@ void new_unsetenv(vars_t *vars)
 	if (vars->av[1] == NULL)
 	{
 		print_error(vars, ": Incorrect number of arguments\n");
+		vars->status = 2;
 		return;
 	}
 	key = find_key(vars->env, vars->av[1]);
