@@ -10,7 +10,6 @@
 int path_execute(char *command, vars_t *vars)
 {
 	pid_t child_pid;
-	int status;
 
 	child_pid = fork();
 	if (child_pid == -1)
@@ -20,14 +19,14 @@ int path_execute(char *command, vars_t *vars)
 	}
 	if (child_pid == 0)
 	{
-		if (execve(command, vars->av, NULL) == -1)
+		if (execve(command, vars->av, vars->env) == -1)
 		{
 			perror("Fatal Error");
-			return (-1);
+			return(-1);
 		}
 	}
 	else
-		wait(&status);
+		wait(&vars->status);
 	return (0);
 }
 
@@ -37,15 +36,20 @@ int path_execute(char *command, vars_t *vars)
  *
  * Return: pointer to the node that contains the PATH, or NULL on failure
  */
-env_t *find_path(env_t *head)
+char *find_path(char **env)
 {
-	while (head)
+	char *path = "PATH=";
+	unsigned int i, j;
+
+	for (i = 0; env[i] != NULL; i++)
 	{
-		if (_strcmpr(head->key, "PATH") == 0)
+		for (j = 0; j < 5; j++)
+			if (path[j] != env[i][j])
+				break;
+		if (j == 5)
 			break;
-		head = head->next;
 	}
-	return (head);
+	return (env[i]);
 }
 
 /**
@@ -56,34 +60,37 @@ env_t *find_path(env_t *head)
  */
 void check_for_path(vars_t *vars)
 {
-	env_t *path;
+	char *path;
 	char *path_dup = NULL, *check;
-	size_t i = 0;
+	unsigned int i = 0;
 	char **path_tokens;
 	struct stat buf;
 	int r = 0;
 
-	path = find_path(*(vars->env));
-	path_dup = _strdup(path->value);
-	path_tokens = tokenize(path_dup, ":");
-	if (path_tokens == NULL)
+	path = find_path(vars->env);
+	if (path != NULL)
 	{
-		perror("Fatal Error");
-		return;
-	}
-	for (i = 0; path_tokens[i]; i++)
-	{
-		check = _strcat(path_tokens[i], vars->av[0]);
-		if (stat(check, &buf) == 0)
+		path_dup = _strdup(path + 5);
+		path_tokens = tokenize(path_dup, ":");
+		if (path_tokens == NULL)
 		{
-			r = path_execute(check, vars);
-			free(check);
-			break;
+			perror("Fatal Error");
+			return;
 		}
-		free(check);
+		for (i = 0; path_tokens[i]; i++)
+		{
+			check = _strcat(path_tokens[i], vars->av[0]);
+			if (stat(check, &buf) == 0)
+			{
+				r = path_execute(check, vars);
+				free(check);
+				break;
+			}
+			free(check);
+		}
+		free(path_dup);
 	}
-	free(path_dup);
-	if (path_tokens[i] == NULL)
+	if (path == NULL || path_tokens[i] == NULL)
 		r = execute_cwd(vars);
 	free(path_tokens);
 	if (r == -1)
@@ -99,7 +106,6 @@ void check_for_path(vars_t *vars)
 int execute_cwd(vars_t *vars)
 {
 	pid_t child_pid;
-	int status;
 
 	child_pid = fork();
 	if (child_pid == -1)
@@ -109,13 +115,14 @@ int execute_cwd(vars_t *vars)
 	}
 	if (child_pid == 0)
 	{
-		if (execve(vars->av[0], vars->av, NULL) == -1)
+		if (execve(vars->av[0], vars->av, vars->env) == -1)
 		{
 			perror("Error:");
-			return (-1);
+			vars->status = 127 * 256;
+			return(-1);
 		}
 	}
 	else
-		wait(&status);
+		wait(&vars->status);
 	return (0);
 }

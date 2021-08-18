@@ -7,17 +7,15 @@
  *
  * Return: 0 or exit status, or ?
  */
-int main(int argc __attribute__((unused)), char **argv)
+int main(int argc __attribute__((unused)), char **argv, char **environment)
 {
 	size_t len_buffer = 0;
 	unsigned int is_pipe = 0;
-	env_t *env = NULL;
 	struct stat st;
-	vars_t vars = {NULL, NULL, NULL, 0, NULL};
+	vars_t vars = {NULL, NULL, NULL, 0, NULL, 0};
 
 	vars.argv = argv;
-	env = make_env(environ);
-	vars.env = &env;
+	vars.env = make_env(environment);
 	if (fstat(STDIN_FILENO, &st) == -1)
 	{
 		perror("Error with STDIN");
@@ -40,7 +38,7 @@ int main(int argc __attribute__((unused)), char **argv)
 			_puts("$ ");
 		vars.buffer = NULL;
 	}
-	free_env(&env);
+	free_env(vars.env);
 	free(vars.buffer);
 	exit(127);
 }
