@@ -17,6 +17,7 @@
  * @env: environment variables
  * @count: count of commands entered
  * @argv: arguments at opening of shell
+ * @status: exit status
  */
 typedef struct variables
 {
@@ -59,5 +60,9 @@ void check_for_path(vars_t *vars);
 int path_execute(char *command, vars_t *vars);
 char *find_path(char **env);
 int execute_cwd(vars_t *vars);
+
+void print_error(vars_t *vars, char *msg);
+void _puts2(char *str);
+char *_uitoa(unsigned int count);
 
 #endif /* _SHELL_H_ */

@@ -38,7 +38,8 @@ int main(int argc __attribute__((unused)), char **argv, char **environment)
 			_puts("$ ");
 		vars.buffer = NULL;
 	}
+	_puts("\n");
 	free_env(vars.env);
 	free(vars.buffer);
-	exit(127);
+	exit(vars.status);
 }

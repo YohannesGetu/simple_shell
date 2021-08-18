@@ -36,7 +36,7 @@ void new_exit(vars_t *vars)
 	free(vars->buffer);
 	free(vars->av);
 	free_env(vars->env);
-	exit(vars->status/256);
+	exit(vars->status);
 }
 
 /**
