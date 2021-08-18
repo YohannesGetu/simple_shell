@@ -4,6 +4,7 @@
  * main - main function for the shell
  * @argc: number of arguments passed to main
  * @argv: array of arguments passed to main
+ * @environment: array of environment variables
  *
  * Return: 0 or exit status, or ?
  */
@@ -18,7 +19,7 @@ int main(int argc __attribute__((unused)), char **argv, char **environment)
 	vars.env = make_env(environment);
 	if (fstat(STDIN_FILENO, &st) == -1)
 	{
-		perror("Error with STDIN");
+		print_error(&vars, NULL);
 		exit(1);
 	}
 	if ((st.st_mode & S_IFMT) == S_IFIFO)
@@ -38,7 +39,8 @@ int main(int argc __attribute__((unused)), char **argv, char **environment)
 			_puts("$ ");
 		vars.buffer = NULL;
 	}
-	_puts("\n");
+	if (is_pipe == 0)
+		_puts("\n");
 	free_env(vars.env);
 	free(vars.buffer);
 	exit(vars.status);
