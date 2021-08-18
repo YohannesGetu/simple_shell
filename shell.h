@@ -9,6 +9,7 @@
 #include <sys/stat.h>
 #include <sys/wait.h>
 #include <limits.h>
+#include <signal.h>
 
 
 /**
@@ -52,6 +53,7 @@ unsigned int _strlen(char *str);
 
 char **tokenize(char *buffer, char *delimiter);
 char **_realloc(char **ptr, size_t *size);
+char *new_strtok(char *str, const char *delim);
 
 void (*check_for_builtins(vars_t *vars))(vars_t *vars);
 void new_exit(vars_t *vars);

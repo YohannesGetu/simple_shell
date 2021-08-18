@@ -116,4 +116,3 @@ int _atoi(char *str)
 	printf("%d\n", num);
 	return (num);
 }
-

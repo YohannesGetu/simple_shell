@@ -1,5 +1,23 @@
 #include "shell.h"
 
+/* global variable for ^C handling */
+unsigned int sig_flag;
+
+/**
+ * sig_handler - handles ^C signal interupt
+ * @uuv: unused variable (required for signal function prototype)
+ *
+ * Return: void
+ */
+static void sig_handler(int uuv)
+{
+	(void) uuv;
+	if (sig_flag == 0)
+		_puts("\n$ ");
+	else
+		_puts("\n");
+}
+
 /**
  * main - main function for the shell
  * @argc: number of arguments passed to main
@@ -17,17 +35,21 @@ int main(int argc __attribute__((unused)), char **argv, char **environment)
 
 	vars.argv = argv;
 	vars.env = make_env(environment);
+	signal(SIGINT, sig_handler);
 	if (fstat(STDIN_FILENO, &st) == -1)
 	{
-		print_error(&vars, NULL);
+		perror("Fatal Error");
+		free_env(vars.env);
 		exit(1);
 	}
 	if ((st.st_mode & S_IFMT) == S_IFIFO)
 		is_pipe = 1;
 	if (is_pipe == 0)
 		_puts("$ ");
+	sig_flag = 0;
 	while (getline(&(vars.buffer), &len_buffer, stdin) != -1)
 	{
+		sig_flag = 1;
 		vars.count++;
 		vars.av = tokenize(vars.buffer, "\n \t\r");
 		if (vars.av && vars.av[0])
@@ -38,6 +60,7 @@ int main(int argc __attribute__((unused)), char **argv, char **environment)
 		if (is_pipe == 0)
 			_puts("$ ");
 		vars.buffer = NULL;
+		sig_flag = 0;
 	}
 	if (is_pipe == 0)
 		_puts("\n");
