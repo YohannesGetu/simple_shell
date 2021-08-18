@@ -35,7 +35,7 @@ void new_exit(vars_t *vars)
 {
 	int status;
 
-	if (vars->av[1] != NULL)
+	if (_strcmpr(vars->av[0], "exit") == 0 && vars->av[1] != NULL)
 	{
 		status = _atoi(vars->av[1]);
 		if (status == -1)
@@ -95,12 +95,7 @@ void new_setenv(vars_t *vars)
 	{
 		var = add_value(vars);
 		if (var == NULL)
-		{
-			free(vars->buffer);
-			free(vars->av);
-			free_env(vars->env);
 			exit(127);
-		}
 		free(*key);
 		*key = var;
 	}

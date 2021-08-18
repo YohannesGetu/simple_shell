@@ -26,7 +26,7 @@ void add_key(vars_t *vars)
 	if (newenv[i] == NULL)
 	{
 		free(newenv);
-		exit(1);
+		exit(127);
 	}
 	newenv[i + 1] = NULL;
 	free(vars->env);
@@ -72,6 +72,7 @@ char *add_value(vars_t *vars)
 	new = malloc(sizeof(char) * (len1 + len2 + 2));
 	if (new == NULL)
 	{
+		print_error(vars, NULL);
 		free(vars->buffer);
 		free(vars->av);
 		free_env(vars->env);

@@ -26,6 +26,8 @@ int path_execute(char *command, vars_t *vars)
 			wait(&vars->status);
 			if (WIFEXITED(vars->status))
 				vars->status = WEXITSTATUS(vars->status);
+			else if (WIFSIGNALED(vars->status) && WTERMSIG(vars->status) == SIGINT)
+				vars->status = 130;
 			return (0);
 		}
 		vars->status = 127;
@@ -131,6 +133,8 @@ int execute_cwd(vars_t *vars)
 					wait(&vars->status);
 					if (WIFEXITED(vars->status))
 						vars->status = WEXITSTATUS(vars->status);
+					else if (WIFSIGNALED(vars->status) && WTERMSIG(vars->status) == SIGINT)
+						vars->status = 130;
 					return (0);
 				}
 				vars->status = 127;

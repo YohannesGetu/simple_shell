@@ -43,7 +43,10 @@ char *new_strtok(char *str, const char *delim)
 			break;
 	}
 	if (next_token[i] == '\0' || next_token[i] == '#')
+	{
+		next_token = NULL;
 		return (NULL);
+	}
 	token_start = next_token + i;
 	next_token = token_start;
 	for (i = 0; next_token[i] != '\0'; i++)

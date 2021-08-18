@@ -57,10 +57,10 @@ int main(int argc __attribute__((unused)), char **argv, char **environment)
 				check_for_path(&vars);
 		free(vars.buffer);
 		free(vars.av);
+		sig_flag = 0;
 		if (is_pipe == 0)
 			_puts("$ ");
 		vars.buffer = NULL;
-		sig_flag = 0;
 	}
 	if (is_pipe == 0)
 		_puts("\n");
