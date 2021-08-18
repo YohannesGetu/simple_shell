@@ -8,12 +8,11 @@
  */
 ssize_t _puts(char *str)
 {
-	ssize_t i, len;
+	ssize_t num, len;
 
-	for (i = 0; str[i]; i++)
-		;
-	len = write(1, str, i);
-	if (len != i)
+	num = _strlen(str);
+	len = write(STDOUT_FILENO, str, num);
+	if (len != num)
 	{
 		perror("Fatal Error");
 		return (-1);

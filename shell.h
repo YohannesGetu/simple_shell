@@ -55,6 +55,12 @@ char **_realloc(char **ptr, size_t *size);
 void (*check_for_builtins(vars_t *vars))(vars_t *vars);
 void new_exit(vars_t *vars);
 void _env(vars_t *vars);
+void new_setenv(vars_t *vars);
+void new_unsetenv(vars_t *vars);
+
+void add_key(vars_t *vars);
+char **find_key(char **env, char *key);
+char *add_value(vars_t *vars);
 
 void check_for_path(vars_t *vars);
 int path_execute(char *command, vars_t *vars);
