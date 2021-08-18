@@ -2,12 +2,10 @@
 
 /**
  * check_for_builtins - checks if the command is a builtin
- * @av: argument list to the shell
- * @env: environment list
- * @buffer: buffer
+ * @vars: variables
  * Return: pointer to the function or NULL
  */
-void (*check_for_builtins(char *buffer, char **av, env_t **env))()
+void (*check_for_builtins(vars_t *vars))(vars_t *vars)
 {
 	unsigned int i;
 	builtins_t check[] = {
@@ -20,43 +18,37 @@ void (*check_for_builtins(char *buffer, char **av, env_t **env))()
 
 	for (i = 0; check[i].f != NULL; i++)
 	{
-		if (_strcmpr(av[0], check[i].name) == 0)
+		if (_strcmpr(vars->av[0], check[i].name) == 0)
 			break;
 	}
 	if (check[i].f != NULL)
-		check[i].f(buffer, av, env);
+		check[i].f(vars);
 	return (check[i].f);
 }
 
 /**
  * new_exit - exit program
- * @buffer: buffer
- * @av: arguments
- * @env: environment
+ * @vars: variables
  * Return: void
  */
-void new_exit(char *buffer, char *av, env_t **env)
+void new_exit(vars_t *vars)
 {
-	free(buffer);
-	free(av);
-	free_env(env);
+	free(vars->buffer);
+	free(vars->av);
+	free_env(vars->env);
 	exit(0); /* add precision, example 98, etc */
 }
 
 /**
  * _env - prints the current environment
- * @env: environment variables to be printed
- * @b: buffer
- * @av: arguments
- * Return: 0 void.
+ * @vars: struct of variables
+ * Return: void.
  */
-void _env(char *b, char **av, env_t **env)
+void _env(vars_t *vars)
 {
 	env_t *tmp;
-	(void)b;
-	(void)av;
 
-	tmp = *env;
+	tmp = *(vars->env);
 	while (tmp != NULL)
 	{
 		_puts(tmp->key);

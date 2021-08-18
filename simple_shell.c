@@ -2,19 +2,22 @@
 
 /**
  * main - main function for the shell
+ * @argc: number of arguments passed to main
+ * @argv: array of arguments passed to main
  *
  * Return: 0 or exit status, or ?
  */
-int main(void)
+int main(int argc __attribute__((unused)), char **argv)
 {
-	char *buffer = NULL;
-	char **av = NULL;
 	size_t len_buffer = 0;
 	unsigned int is_pipe = 0;
 	env_t *env = NULL;
 	struct stat st;
+	vars_t vars = {NULL, NULL, NULL, 0, NULL};
 
+	vars.argv = argv;
 	env = make_env(environ);
+	vars.env = &env;
 	if (fstat(STDIN_FILENO, &st) == -1)
 	{
 		perror("Error with STDIN");
@@ -24,19 +27,20 @@ int main(void)
 		is_pipe = 1;
 	if (is_pipe == 0)
 		_puts("$ ");
-	while (getline(&buffer, &len_buffer, stdin) != -1)
+	while (getline(&(vars.buffer), &len_buffer, stdin) != -1)
 	{
-		av = tokenize(buffer, "\n \t");
-		if (av && av[0])
-			if (check_for_builtins(buffer, av, &env) == NULL)
-				check_for_path(av, &env);
-		free(buffer);
-		free(av);
+		vars.count++;
+		vars.av = tokenize(vars.buffer, "\n \t\r");
+		if (vars.av && vars.av[0])
+			if (check_for_builtins(&vars) == NULL)
+				check_for_path(&vars);
+		free(vars.buffer);
+		free(vars.av);
 		if (is_pipe == 0)
 			_puts("$ ");
-		buffer = NULL;
+		vars.buffer = NULL;
 	}
 	free_env(&env);
-	free(buffer);
+	free(vars.buffer);
 	exit(127);
 }
