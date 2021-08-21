@@ -79,7 +79,7 @@ simple_shell is designed to run in the `Ubuntu 14.04 LTS` linux environment and 
 The simple_shell is designed to execute commands in a similar manner to sh, however with more limited functionality. The development of this shell is ongoing. The below features will be checked as they become available (see man page for complete information on usage):
 
 ### Features
-- [ ] uses the PATH
+- [x] uses the PATH
 - [ ] implements builtins
 - [ ] handles command line arguments
 - [ ] custom strtok function
@@ -140,3 +140,4 @@ Yohannes Getu | [GitHub](https://github.com/YohannesGetu) | [Email](mailto:nede.
 
 ## License
 simple_shell is open source and therefore free to download and use without permission.
+
