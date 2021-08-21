@@ -98,7 +98,7 @@ The simple_shell is designed to execute commands in a similar manner to sh, howe
 - [x] exit
 - [x] env
 - [x] setenv
-- [ ] unsetenv
+- [x] unsetenv
 - [ ] cd
 - [ ] help
 - [ ] history
