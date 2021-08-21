@@ -29,20 +29,13 @@ static void sig_handler(int uuv)
 int main(int argc __attribute__((unused)), char **argv, char **environment)
 {
 	size_t len_buffer = 0;
-	unsigned int is_pipe = 0;
-	struct stat st;
-	vars_t vars = {NULL, NULL, NULL, 0, NULL, 0};
+	unsigned int is_pipe = 0, i;
+	vars_t vars = {NULL, NULL, NULL, 0, NULL, 0, NULL};
 
 	vars.argv = argv;
 	vars.env = make_env(environment);
 	signal(SIGINT, sig_handler);
-	if (fstat(STDIN_FILENO, &st) == -1)
-	{
-		perror("Fatal Error");
-		free_env(vars.env);
-		exit(1);
-	}
-	if ((st.st_mode & S_IFMT) == S_IFIFO)
+	if (!isatty(STDIN_FILENO))
 		is_pipe = 1;
 	if (is_pipe == 0)
 		_puts("$ ");
@@ -51,12 +44,17 @@ int main(int argc __attribute__((unused)), char **argv, char **environment)
 	{
 		sig_flag = 1;
 		vars.count++;
-		vars.av = tokenize(vars.buffer, "\n \t\r");
-		if (vars.av && vars.av[0])
-			if (check_for_builtins(&vars) == NULL)
-				check_for_path(&vars);
+		vars.commands = tokenize(vars.buffer, ";");
+		for (i = 0; vars.commands && vars.commands[i] != NULL; i++)
+		{
+			vars.av = tokenize(vars.commands[i], "\n \t\r");
+			if (vars.av && vars.av[0])
+				if (check_for_builtins(&vars) == NULL)
+					check_for_path(&vars);
+			free(vars.av);
+		}
 		free(vars.buffer);
-		free(vars.av);
+		free(vars.commands);
 		sig_flag = 0;
 		if (is_pipe == 0)
 			_puts("$ ");

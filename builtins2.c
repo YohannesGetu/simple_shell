@@ -22,9 +22,14 @@ void add_key(vars_t *vars)
 	}
 	for (i = 0; vars->env[i] != NULL; i++)
 		newenv[i] = vars->env[i];
-	newenv[i] = add_value(vars);
+	newenv[i] = add_value(vars->av[1], vars->av[2]);
 	if (newenv[i] == NULL)
 	{
+		print_error(vars, NULL);
+		free(vars->buffer);
+		free(vars->commands);
+		free(vars->av);
+		free_env(vars->env);
 		free(newenv);
 		exit(127);
 	}
@@ -58,31 +63,26 @@ char **find_key(char **env, char *key)
 
 /**
  * add_value - create a new environment variable string
- * @vars: pointer to struct of variables
+ * @key: variable name
+ * @value: variable value
  *
  * Return: pointer to the new string;
  */
-char *add_value(vars_t *vars)
+char *add_value(char *key, char *value)
 {
 	unsigned int len1, len2, i, j;
 	char *new;
 
-	len1 = _strlen(vars->av[1]);
-	len2 = _strlen(vars->av[2]);
+	len1 = _strlen(key);
+	len2 = _strlen(value);
 	new = malloc(sizeof(char) * (len1 + len2 + 2));
 	if (new == NULL)
-	{
-		print_error(vars, NULL);
-		free(vars->buffer);
-		free(vars->av);
-		free_env(vars->env);
 		return (NULL);
-	}
-	for (i = 0; vars->av[1][i] != '\0'; i++)
-		new[i] = vars->av[1][i];
+	for (i = 0; key[i] != '\0'; i++)
+		new[i] = key[i];
 	new[i] = '=';
-	for (j = 0; vars->av[2][j] != '\0'; j++)
-		new[i + 1 + j] = vars->av[2][j];
+	for (j = 0; value[j] != '\0'; j++)
+		new[i + 1 + j] = value[j];
 	new[i + 1 + j] = '\0';
 	return (new);
 }
@@ -114,6 +114,5 @@ int _atoi(char *str)
 	}
 	if (i > digits)
 		return (-1);
-	printf("%d\n", num);
 	return (num);
 }

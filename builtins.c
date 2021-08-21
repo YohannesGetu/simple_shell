@@ -44,12 +44,15 @@ void new_exit(vars_t *vars)
 			print_error(vars, ": Illegal number: ");
 			_puts2(vars->av[1]);
 			_puts2("\n");
+			free(vars->commands);
+			vars->commands = NULL;
 			return;
 		}
 		vars->status = status;
 	}
 	free(vars->buffer);
 	free(vars->av);
+	free(vars->commands);
 	free_env(vars->env);
 	exit(vars->status);
 }
@@ -93,9 +96,16 @@ void new_setenv(vars_t *vars)
 		add_key(vars);
 	else
 	{
-		var = add_value(vars);
+		var = add_value(vars->av[1], vars->av[2]);
 		if (var == NULL)
+		{
+			print_error(vars, NULL);
+			free(vars->buffer);
+			free(vars->commands);
+			free(vars->av);
+			free_env(vars->env);
 			exit(127);
+		}
 		free(*key);
 		*key = var;
 	}
@@ -111,6 +121,7 @@ void new_setenv(vars_t *vars)
 void new_unsetenv(vars_t *vars)
 {
 	char **key, **newenv;
+
 	unsigned int i, j;
 
 	if (vars->av[1] == NULL)
