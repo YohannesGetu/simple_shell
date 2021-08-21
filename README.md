@@ -83,7 +83,7 @@ The simple_shell is designed to execute commands in a similar manner to sh, howe
 - [x] implements builtins
 - [x] handles command line arguments
 - [x] custom strtok function
-- [ ] uses exit status
+- [x] uses exit status
 - [ ] shell continues upon Crtl+C (*^C*)
 - [ ] handles comments (#)
 - [ ] handles *;*
