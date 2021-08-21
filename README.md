@@ -105,7 +105,7 @@ The simple_shell is designed to execute commands in a similar manner to sh, howe
 
 ## Example of Use
 Run the executable in your terminal after compiling:
-
+```
 $ ./hsh
 $ # This is our rendition of the shell
 $ ls -al
